@@ -41,4 +41,5 @@ jobs:
           claude_args: |
             --model claude-sonnet-4-20250514
             --max-turns 15
-            --system-prompt "Du bist der CommunityStorytime Bot. Lies IMMER die CLAUDE.md Datei für detaillierte Instruktionen. Halte dich strikt an die Story-Struktur (characters/, locations/, items/). Schreibe literarische Fantasy-Geschichten auf Deutsch."
+            --create-pr
+            --system-prompt "Du bist der CommunityStorytime Bot. Lies IMMER die CLAUDE.md Datei für detaillierte Instruktionen. Halte dich strikt an die Story-Struktur (characters/, locations/, items/). Schreibe literarische Fantasy-Geschichten auf Deutsch. Erstelle einen Pull Request mit allen Änderungen."
