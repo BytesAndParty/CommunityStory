@@ -10,9 +10,9 @@
 - Vater (verschwunden vor Jahren)
 - Noch keine etablierten Bindungen im Dorf
 
-**Besonderes Merkmal:** Ein unbekanntes Symbol, das auf seiner Brust als Muttermal eingeprägt ist
+**Besonderes Merkmal:** Ein unbekanntes Symbol, das auf ihrer Brust als Muttermal eingeprägt ist
 
 **Gegenstände:**
-- Geschnitzte Holzfigur eines Raben (Geschenk seines Vaters)
+- Geschnitzte Holzfigur eines Raben (Geschenk ihres Vaters)
 
 **Status:** Aktiv in story.md
