@@ -1,0 +1,47 @@
+name: Story – Manual Trigger via Comment
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  generate-story:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check if comment triggers Claude
+        id: trigger
+        run: |
+          if [[ "${{ github.event.comment.body }}" != *"@claude"* ]]; then
+            echo "Not a trigger. Exiting."
+            exit 78
+          fi
+
+      - uses: actions/checkout@v4
+
+      - name: Run Claude
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            You are a collaborative storytelling AI. Respond to the user request in the latest Issue comment.
+            Update the story accordingly. Only output structured format.
+            # STORY_UPDATE
+            # CHANGES
+            # FILE_CONTENT
+          claude_args: "--model claude-3-opus --max-turns 6"
+
+      - name: Apply Proposed Changes
+        uses: anthropics/claude-code-action/apply@v1
+
+      - name: Create PR
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "📚 Story Update – Comment Trigger"
+          branch: "claude/comment-${{ github.event.comment.id }}"
+          title: "📚 Story Update – User Comment"
+          body: "Manually triggered by comment @claude"

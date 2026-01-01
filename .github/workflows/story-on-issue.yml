@@ -1,0 +1,59 @@
+name: Story Update on Issue
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: read
+
+jobs:
+  generate-story:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install anthropic
+
+      - name: Run Claude Story Generator
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          python .github/scripts/generate_story.py
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "📚 Story Update – Issue #${{ github.event.issue.number }}"
+          branch: "story/issue-${{ github.event.issue.number }}"
+          title: "📚 Story Update – Issue #${{ github.event.issue.number }}: ${{ github.event.issue.title }}"
+          body: |
+            ## Story-Update basierend auf Issue #${{ github.event.issue.number }}
+
+            **Vorschlag:** ${{ github.event.issue.title }}
+
+            Dieser Pull Request wurde automatisch von Claude generiert.
+
+            ### Bitte überprüfen:
+            - [ ] Story-Konsistenz mit bisherigen Kapiteln
+            - [ ] Charaktere und Orte korrekt dokumentiert
+            - [ ] Schreibstil passt zur bisherigen Geschichte
+
+            ---
+
+            💡 Du kannst Änderungswünsche als Kommentar posten – Claude wird den PR dann automatisch aktualisieren!
