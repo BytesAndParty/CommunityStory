@@ -1,36 +1,42 @@
-name: Story Update on Issue
+name: CommunityStorytime - Claude Code
 
 on:
-  issues:
-    types: [opened, labeled]
   issue_comment:
     types: [created]
-
-permissions:
-  issues: write
+  pull_request_review_comment:
+    types: [created]
+  issues:
+    types: [opened]
+  pull_request_review:
+    types: [submitted]
 
 jobs:
-  trigger-claude:
-    runs-on: ubuntu-latest
-    # Nur triggern bei neuen Issues ODER wenn @storytime im Kommentar erwähnt wird
+  claude:
     if: |
-      github.event_name == 'issues' ||
-      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@storytime'))
-
+      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@storytime')) ||
+      (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@storytime')) ||
+      (github.event_name == 'pull_request_review' && contains(github.event.review.body, '@storytime')) ||
+      (github.event_name == 'issues')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      id-token: write
+      actions: read
     steps:
-      - name: Comment to trigger Claude
-        uses: peter-evans/create-or-update-comment@v4
+      - name: Checkout repository
+        uses: actions/checkout@v5
         with:
-          issue-number: ${{ github.event.issue.number }}
-          body: |
-            @claude Bitte lies dieses Issue und die CLAUDE.md Instruktionen.
+          fetch-depth: 0
 
-            Entwickle die Geschichte in story.md basierend auf diesem Vorschlag weiter.
-
-            Folge dabei strikt den Richtlinien in CLAUDE.md:
-            - Lies story.md und alle relevanten Charakter-/Ortsdateien
-            - Schreibe ein neues Kapitel (300-800 Wörter)
-            - Erstelle/aktualisiere Charakter-, Orts- oder Item-Dateien falls nötig
-            - Halte dich an den etablierten Story-Stil
-
-            Erstelle einen Pull Request mit allen Änderungen.
+      - name: Run Claude Code
+        id: claude
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          trigger_phrase: "@storytime"
+          claude_args: |
+            --model claude-sonnet-4-20250514
+            --max-turns 15
+            --system-prompt "Du bist der CommunityStorytime Bot. Lies IMMER die CLAUDE.md Datei für detaillierte Instruktionen. Halte dich strikt an die Story-Struktur (characters/, locations/, items/). Schreibe literarische Fantasy-Geschichten auf Deutsch."
