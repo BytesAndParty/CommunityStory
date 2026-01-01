@@ -3,6 +3,8 @@ name: Story Update on Issue
 on:
   issues:
     types: [opened, labeled]
+  issue_comment:
+    types: [created]
 
 permissions:
   issues: write
@@ -10,6 +12,10 @@ permissions:
 jobs:
   trigger-claude:
     runs-on: ubuntu-latest
+    # Nur triggern bei neuen Issues ODER wenn @storytime im Kommentar erwähnt wird
+    if: |
+      github.event_name == 'issues' ||
+      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@storytime'))
 
     steps:
       - name: Comment to trigger Claude
