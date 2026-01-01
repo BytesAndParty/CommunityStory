@@ -12,6 +12,11 @@ on:
 
 jobs:
   claude:
+    # Automatisch bei neuen Issues ODER wenn @storytime erwähnt wird
+    if: |
+      github.event_name == 'issues' ||
+      contains(github.event.comment.body, '@storytime') ||
+      contains(github.event.review.body, '@storytime')
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -30,7 +35,7 @@ jobs:
         uses: anthropics/claude-code-action@v1
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
-          trigger_phrase: "@storytime"
+          # Kein trigger_phrase = Claude wird immer ausgeführt wenn Job läuft
           claude_args: |
             --model claude-sonnet-4-20250514
             --max-turns 15
