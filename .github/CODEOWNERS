@@ -1,0 +1,10 @@
+# CommunityStorytime Code Owners
+# Jeder, der hier aufgeführt ist, darf Pull Requests reviewen und approven
+
+# Story-Dateien
+/story.md @BytesAndParty
+/characters/ @BytesAndParty
+/locations/ @BytesAndParty
+/items/ @BytesAndParty
+
+# Neue Contributors werden automatisch hinzugefügt, sobald ihr erster PR gemerged wurde

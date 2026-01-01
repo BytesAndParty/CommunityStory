@@ -1,0 +1,55 @@
+name: Update CODEOWNERS on Merge
+
+on:
+  pull_request:
+    types: [closed]
+
+permissions:
+  contents: write
+
+jobs:
+  update-codeowners:
+    # Nur wenn PR gemerged wurde (nicht nur geschlossen)
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Add PR author to CODEOWNERS
+        env:
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+        run: |
+          CODEOWNERS_FILE=".github/CODEOWNERS"
+
+          # Prüfen ob User bereits in CODEOWNERS ist
+          if grep -q "@$PR_AUTHOR" "$CODEOWNERS_FILE"; then
+            echo "✅ @$PR_AUTHOR ist bereits in CODEOWNERS"
+            exit 0
+          fi
+
+          # User hinzufügen
+          echo "" >> "$CODEOWNERS_FILE"
+          echo "# Added after successful PR merge" >> "$CODEOWNERS_FILE"
+          echo "/story.md @$PR_AUTHOR" >> "$CODEOWNERS_FILE"
+          echo "/characters/ @$PR_AUTHOR" >> "$CODEOWNERS_FILE"
+          echo "/locations/ @$PR_AUTHOR" >> "$CODEOWNERS_FILE"
+          echo "/items/ @$PR_AUTHOR" >> "$CODEOWNERS_FILE"
+
+          echo "✅ @$PR_AUTHOR wurde zu CODEOWNERS hinzugefügt"
+
+      - name: Commit CODEOWNERS update
+        run: |
+          git config --global user.name "CommunityStorytime Bot"
+          git config --global user.email "bot@communitystorytime.local"
+          git add .github/CODEOWNERS
+
+          if git diff --staged --quiet; then
+            echo "Keine Änderungen an CODEOWNERS"
+          else
+            git commit -m "🎭 Add @${{ github.event.pull_request.user.login }} to CODEOWNERS"
+            git push
+          fi

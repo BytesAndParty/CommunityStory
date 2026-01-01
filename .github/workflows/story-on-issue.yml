@@ -2,58 +2,29 @@ name: Story Update on Issue
 
 on:
   issues:
-    types: [opened]
+    types: [opened, labeled]
 
 permissions:
-  contents: write
-  pull-requests: write
-  issues: read
+  issues: write
 
 jobs:
-  generate-story:
+  trigger-claude:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Comment to trigger Claude
+        uses: peter-evans/create-or-update-comment@v4
         with:
-          python-version: '3.11'
-
-      - name: Install dependencies
-        run: |
-          pip install anthropic
-
-      - name: Run Claude Story Generator
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          ISSUE_TITLE: ${{ github.event.issue.title }}
-          ISSUE_BODY: ${{ github.event.issue.body }}
-          ISSUE_NUMBER: ${{ github.event.issue.number }}
-        run: |
-          python .github/scripts/generate_story.py
-
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v6
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "📚 Story Update – Issue #${{ github.event.issue.number }}"
-          branch: "story/issue-${{ github.event.issue.number }}"
-          title: "📚 Story Update – Issue #${{ github.event.issue.number }}: ${{ github.event.issue.title }}"
+          issue-number: ${{ github.event.issue.number }}
           body: |
-            ## Story-Update basierend auf Issue #${{ github.event.issue.number }}
+            @claude Bitte lies dieses Issue und die CLAUDE.md Instruktionen.
 
-            **Vorschlag:** ${{ github.event.issue.title }}
+            Entwickle die Geschichte in story.md basierend auf diesem Vorschlag weiter.
 
-            Dieser Pull Request wurde automatisch von Claude generiert.
+            Folge dabei strikt den Richtlinien in CLAUDE.md:
+            - Lies story.md und alle relevanten Charakter-/Ortsdateien
+            - Schreibe ein neues Kapitel (300-800 Wörter)
+            - Erstelle/aktualisiere Charakter-, Orts- oder Item-Dateien falls nötig
+            - Halte dich an den etablierten Story-Stil
 
-            ### Bitte überprüfen:
-            - [ ] Story-Konsistenz mit bisherigen Kapiteln
-            - [ ] Charaktere und Orte korrekt dokumentiert
-            - [ ] Schreibstil passt zur bisherigen Geschichte
-
-            ---
-
-            💡 Du kannst Änderungswünsche als Kommentar posten – Claude wird den PR dann automatisch aktualisieren!
+            Erstelle einen Pull Request mit allen Änderungen.
