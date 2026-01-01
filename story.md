@@ -10,10 +10,10 @@ Doch Veränderung beginnt nie im Palast. Sie beginnt mit einer einzelnen Person.
 
 ## Kapitel 1: Die Stimme aus dem Wald
 
-Als die Morgensonne hinter dem Silberwald aufstieg, öffnete Elden Varr die Augen. Die Stimme aus seinen Träumen hallte noch nach – dieselbe, die ihn seit seiner Kindheit rief. Diesmal war sie lauter gewesen. Drängender.
+Als die Morgensonne hinter dem Silberwald aufstieg, öffnete Elden Varr die Augen. Die Stimme aus ihren Träumen hallte noch nach – dieselbe, die sie seit ihrer Kindheit rief. Diesmal war sie lauter gewesen. Drängender.
 
-Er griff nach der geschnitzten Holzfigur auf seinem Nachttisch. Ein Rabe. Sein Vater hatte sie ihm vor Jahren geschenkt, kurz bevor er verschwand. "Hör auf die Zeichen", hatte er gesagt. "Sie werden dich rufen, wenn die Zeit reif ist."
+Sie griff nach der geschnitzten Holzfigur auf ihrem Nachttisch. Ein Rabe. Ihr Vater hatte sie ihr vor Jahren geschenkt, kurz bevor er verschwand. "Hör auf die Zeichen", hatte er gesagt. "Sie werden dich rufen, wenn die Zeit reif ist."
 
 Elden hatte nie verstanden, was das bedeuten sollte. Bis heute Morgen.
 
-Draußen, jenseits der Hütten von Eichenruh, wo der uralte Eichenbaum im Zentrum des Dorfplatzes stand, spürte er es: Etwas hatte sich verändert.
+Draußen, jenseits der Hütten von Eichenruh, wo der uralte Eichenbaum im Zentrum des Dorfplatzes stand, spürte sie es: Etwas hatte sich verändert.
